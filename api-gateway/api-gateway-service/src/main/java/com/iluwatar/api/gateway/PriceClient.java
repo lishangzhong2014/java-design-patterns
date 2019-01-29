@@ -22,9 +22,16 @@
  */
 package com.iluwatar.api.gateway;
 
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.concurrent.CompletableFuture;
+
 /**
  * An interface used to communicate with the Price microservice
  */
 public interface PriceClient {
   String getPrice();
+
+  @Async
+  CompletableFuture<String> getPriceAsync();
 }

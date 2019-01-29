@@ -22,9 +22,16 @@
  */
 package com.iluwatar.api.gateway;
 
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.concurrent.CompletableFuture;
+
 /**
  * An interface used to communicate with the Image microservice
  */
 public interface ImageClient {
   String getImagePath();
+
+  @Async
+  public CompletableFuture<String> getImagePathAsync();
 }

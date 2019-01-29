@@ -30,6 +30,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * An adapter to communicate with the Price microservice
@@ -52,5 +53,10 @@ public class PriceClientImpl implements PriceClient {
       e.printStackTrace();
     }
     return response;
+  }
+
+  @Override
+  public CompletableFuture<String> getPriceAsync() {
+    return CompletableFuture.completedFuture(getPrice());
   }
 }

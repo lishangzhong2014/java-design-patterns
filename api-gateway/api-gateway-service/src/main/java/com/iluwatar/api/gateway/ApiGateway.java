@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The ApiGateway aggregates calls to microservices based on the needs of the individual clients.
@@ -45,9 +46,40 @@ public class ApiGateway {
    */
   @RequestMapping("/desktop")
   public DesktopProduct getProductDesktop() {
+    // Start the clock
+    long start = System.currentTimeMillis();
+
     DesktopProduct desktopProduct = new DesktopProduct();
     desktopProduct.setImagePath(imageClient.getImagePath());
     desktopProduct.setPrice(priceClient.getPrice());
+
+    // Print results, including elapsed time
+    System.out.println("Elapsed time: " + (System.currentTimeMillis() - start));
+    return desktopProduct;
+  }
+
+  /**
+   * use https://spring.io/guides/gs/async-method/
+   * @return
+   */
+  @RequestMapping("/desktop-async")
+  public DesktopProduct getProductDesktopAsync() {
+    // Start the clock
+    long start = System.currentTimeMillis();
+
+    CompletableFuture<String> imagePath = imageClient.getImagePathAsync();
+    CompletableFuture<String> price = priceClient.getPriceAsync();
+    CompletableFuture.allOf(imagePath, price).join();
+
+    DesktopProduct desktopProduct = new DesktopProduct();
+    try {
+      desktopProduct.setImagePath(imagePath.get());
+      desktopProduct.setPrice(price.get());
+    } catch (Exception ex){
+      ex.printStackTrace();
+    }
+    // Print results, including elapsed time
+    System.out.println("Elapsed time: " + (System.currentTimeMillis() - start));
     return desktopProduct;
   }
 
