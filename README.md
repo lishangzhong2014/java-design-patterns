@@ -45,3 +45,7 @@ If you are willing to contribute to the project you will find the relevant infor
 # License
 
 This project is licensed under the terms of the MIT license.
+
+# Learning progress
+  - API Gateway: you're also using the Microservices pattern and need a single point of aggregation for your microservice calls
+  - Abstract Document: 
